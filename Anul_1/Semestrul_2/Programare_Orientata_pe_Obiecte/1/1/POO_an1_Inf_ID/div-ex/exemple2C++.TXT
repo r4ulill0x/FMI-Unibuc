@@ -1,0 +1,598 @@
+pct1=poz1;  // obiect B -->obiect D
+--------------------------------
+ppoz=&pct2; //pointer D -->pointer B
+ppoz -> afisare();
+--------------------------------
+ppoz=&pct2; ppoz->arata();
+--------------------------------
+void (pozitie::*pfpoz)(int,int);
+pozitie poz(1,1);
+...
+pfpoz=pozitie::deplasare;
+(poz1.*pfpoz)(10,10);
+----------------------------
+void(punct::*pfpct)(int,int);
+--------------------------------
+pointer functie B -->pointer functie D
+--------------------------------
+pfpct=pozitie::deplasare; //corect
+pfpct=pfpoz;              //corect
+--------------------------------
+pfpoz=punct::deplasare; //eroare
+pfpoz=pfpct;              //eroare
+--------------------------------
+clasa_derivata:
+class D:lista_clase_B {...}
+lista_clase_B:
+specif_acces clasa B1
+lista_clase_B<,specif_acces clasa Bi>
+--------------------------------
+#include <iostream.h>
+#include <string.h>
+//clasa pozitie, clasa de baza (par.21.3.1)
+//clasa string, clasa de baza 
+clasa string {
+protected:
+int ncar;  //lungimea sirului
+char *str;    //adresa sirului
+public:
+//constructori
+string(int n=0)
+{  ncar=n; str=new char[n+1];
+str[0]=0;
+cout<<"Constructor 1"; afisare();
+}
+string(char *s)
+{ ncar=strlen(s);str=new char[ncar+1];
+strcpy(str,s);
+cout<<"Constructor 2"; afisare();}
+string(string & s)
+{  ncar=s.ncar;str=new char[ncar+1];
+strcpy(str,s,str);
+cout<<"Constructor copiere";
+afisare();}
+//destructor
+~string()
+{cout <<"Destructor";
+afisare();delete str;}
+void afisare()
+{ cout <<"string:"<<str<<'\n';  }
+//...supraincarcare operatori [],=,+,==,...
+};
+//clasa strpoz,derivata din string si pozitie
+class strpoz:public pozitie,public string
+{
+char culoare;
+public:
+//constructori
+strpoz(int abs, int ord,int n=0,char c='A'):
+pozitie(abs,ord),string(n)
+{ culoare =c;
+cout<<"Constructor 1";
+afisare();  }
+strpoz(int abs, int ord,char *s,char c='A'):
+pozitie(abs,ord),string(s)
+{ culoare =c;
+cout<<"Constructor 2";
+afisare();  }
+strpoz(int abs, int ord,char *s,char c='A'):
+pozitie(strpoz & sp):pozitie(sp),string(sp);
+{ culoare =sp.culoare;
+cout<<"Constructor copiere";
+afisare();  }
+//destructor 
+~strpoz()
+{cout<<"Destructor";
+afisare();}
+//alte functii membre
+void coloreaza(char c) {culoare=c;}
+void afisare()
+{  cout<<"strpoz:"<<str;
+   cout<<",x="<<x<<",y="<<y;
+   cout<<",culoare="<<culoare;
+   cout<<'\n';  }
+};
+ void main()
+{ strpoz sp1(5,5,"TEXT");
+  sp1.afisare();
+  strpoz sp2(sp1);
+  sp2.afisare();
+}
+Programul afiseaza :
+Constructor pozitie: x=5,y=5
+Constructor 2 string: TEXT
+Constructor 2 strpoz: TEXT,x=5,y=5,culoare=A
+strpoz: TEXT,x=5,y=5,culoare=A
+Constructor copiere pozitie : x=5,y=5
+Constructor copiere string: TEXT
+Constructor copiere strpoz: TEXT,x=5,y=5,culoare=A
+strpoz:TEXT,x=5,y=5,culoare=A
+Final main()
+Destructor strpoz: TEXT ,x=5,y=5,culoare=A
+Destructor string: TEXT
+Destructor pozitie: TEXT,x=5,y=5
+Destructor strpoz: TEXT,x=5,y=5,culoare=A
+Destructor pozitie: TEXT,x=5,y=5
+--------------------------------
+class BB {protected:x,y;...};
+class B1 : public BB {...};
+class B2 : public BB {...};
+class D : public B1,public B2 {...};
+--------------------------------
+BB::B1::x
+--------------------------------
+BB::B2::x
+--------------------------------
+class BB {...};
+class B1:public virtual BB {...}
+class B2:public virtual BB {...}
+class D:public B1,B2 {...}
+--------------------------------
+D(...):B1(...),B2(...),BB(...) {...}
+--------------------------------
+class pozitie
+{...
+virtual void afisare(); //functie virtuala 
+...
+}
+--------------------------------
+//clasa de baza ,pozitie 
+class pozitie {
+protected:
+int x,y;  //coordonate
+public:
+pozitie(int=0,int=0);//constructor
+~pozitie();          //destructor 
+virtual void afisare(); //functie virtuala
+void deplasare(int,int);
+};
+//clasa derivata ,punct
+class punct:public pozitie {
+protected:
+int vizibil; //0=invizibil
+char culoare;   //culoare codificata
+                //printr-o litera 
+public:
+//constructor
+punct(int=0,int=0,char='A');
+//destructor
+~punct();
+void arata() {vizibil=1;}
+void ascunde() {vizibil=0;}
+void coloreaza(char c) {culoare=c;}
+void afisare();
+void deplasare(int,int);
+};
+--------------------------------
+void pozitie::afisare()
+{ 
+cout<"pozitie:"<<this;
+cout<<"x="<<x<<",y="<<y<<'\n';
+}
+void pozitie::deplasare(int dx,int dy)
+{
+cout<<"Deplasare";afisare();
+x+=dx;y+=dy;
+cout<<"catre";afisare();
+}
+void punct::afisare();
+{
+cout <<"punct:"<<this;
+cout<<"x="<<x<<",y="<<y;
+cout<<"culoare="<<culoare;
+if(vizibil) cout<<"vizibil\n"
+else cout<<"invizibil\n";
+}
+void punct::deplasare(int dx,intdy)
+{
+if (vizibil)
+{cout<<"Deplasare";afisare();}
+x+=dx;y+=dy;
+if (vizibil)
+{ cout<<"catre";afisare();  }
+}
+--------------------------------
+void main()
+{
+  pozitie poz(1,1), *ppoz=&poz;
+punct pct1(5,5,'R'), *ppct=&pct;
+ppoz-> afisare();
+ppct->afisare();
+ppoz=ppct;ppoz->afisare();
+ppoz->deplasare(4,4);
+}
+--------------------------------
+virtual void deplasare(int,int);
+--------------------------------
+class cerc: public punct {
+int raza;
+public:
+cerc(int,int,int,char='A');
+~cerc();
+void afisare();
+}
+cerc::cerc(int abs,int ord, int r, char c):
+punct (abs,ord,c)
+{ raza=r;
+  cout<<"Constructor";afisare(); }
+cerc::cerc()
+{  cout<<"Destructor";afisare();  }
+--------------------------------
+
+void cerc::afisare()
+{
+cout<<"cerc:"<<this;
+
+cout<<"centrul "<<'('<<x;
+cout<<','<<y<<"),";
+
+cout<<"raza="<<raza;
+if(vizibil)cout<<"vizibil\n"
+else cout<<"invizibil\n";
+}
+--------------------------------
+void main()
+{
+cerc c(10,10,2);
+pozitie *ppoz=&c;
+c.arata();c.afisare();
+ppoz->afisare();
+c.deplasare(4,4);
+}
+--------------------------------
+struct lnod {
+//pointer catre componenta listei 
+void *data;
+//adresele nodurilor adiacente 
+lnod *urm, *prec;
+};
+--------------------------------
+struct lnod {
+void *data ;
+lnod *urm, *prec;
+lnod(void *d=0) //constructor 
+{ data=d; urm=prec=0;  }
+};
+--------------------------------
+//lista dublu inlantuita,circulara,cu nod capat
+class ldi {
+protected:
+  lnod cap,*crt;
+public:
+ldi();   //constructor
+~ldi(); //destructor
+//test lista vida 
+int nl_vida() {return &cap!=cap.urm}
+//initializeaza indicator curent pe nodul
+//capat
+void capat() (crt=&cap;} 
+//initializeaza indicator curent in fata 
+void prim() {crt =cap.urm;}
+//initializeaza indicator curent la sfarsit
+void ultim() {crt=cap.prec;}
+//avanseaza indicator curent si 
+//intoarce element
+void* spre_dr();
+void* spre_st();
+//citeste elementul curent 
+void*citesc();
+//adauga la dreapta nodului curent
+void*adaug_dr(void*d);
+//adauga la stanga nodului curent
+void*adaug_st(void*d);
+//extrage nodul curent 
+void *extrag();
+};
+---------------------------
+//constructor
+ldi::ldi()
+{ crt=cap.urm=cap.prec=&cap; }
+void* ldi::citesc() //citire element curent 
+{  if(crt!=&cap) return crt->data
+   else return 0; }
+//adaugare la stanga 
+void*ldi::adaug_st(void*d)
+{
+lnod*p;
+p=new lnod(d);
+if(p) {
+p-> urm=crt;p->prec=crt->prec;
+crt->prec=crt->prec->urm=p;
+crt=p;
+return p;
+}
+return 0;
+}
+//adaugare la dreapta 
+void*ldi::adaug_dr(void*d)
+{
+lnod *p;
+p=new lnod(d);
+if(p) {
+p->prec=crt;p->urm=crt->urm;
+crt->urm=crt->urm->prec=p;
+crt=p;return p;
+}
+return 0;
+}
+//extragerea elementului curent 
+void*ldi::extrag()
+{
+lnod*p;
+void*d;
+if(crt!=&cap) {
+p=crt;
+crt->urm->prec=crt->prec;
+crt->prec->urm=crt->urm;
+crt=crt-urm;
+d=p->data;
+delete p;
+return d;
+}
+return 0;
+}
+---------------------------
+//parcurgere in sens direct 
+void*ldi::spre_dr()
+{
+    if(nl_vida() && crt->urm!=&cap){
+        crt=crt->urm;
+        return crt->data;
+     }
+return 0;
+}
+//parcurgere in sens invers
+void*ldi::spre_st()
+{
+    if(nl_vida() && crt->prec!=&cap){
+        crt=crt->prec;
+        return crt->data;
+     }
+return 0;
+}
+-------------------------------
+ldi::~ldi();
+{
+    lnod*p;
+    p=cap.urm;
+    while (p!=&cap){
+       crt=p;p=p->urm;
+       delete crt;
+   }
+}
+---------------------------------
+void main()
+{
+ldi list;
+int*ip,i;
+//inscrie la inceput valorile: 0..9
+for(i=0;i<10;i++)
+list.adug_dr(new int(i));
+//inscrie la sfarsit valorile: 19..10
+list.capat();
+for(i=9;i>=0;i--)
+list.adaug_st(new int(i++10));
+//citeste primul element
+list.prim();
+cout<<*(int*)list.citesc()<<endl;
+//parcurge in sens invers(stanga->
+//dreapta ) si afiseaza 
+list.capat();
+while ((ip=(int*)list.spre_dr()))
+cout<<*ip<<'';cout<<endl;
+//parcurge in sens invers(dreapta->
+//stanga ) si afiseaza 
+list.capat();
+while ((ip=(int*)list.spre_st()))
+cout<<*ip<<'';cout<<endl;
+//extrage si elimina componentele 
+list.prim();
+while ((ip=(int*)list.extrag()))
+{
+cout<<*ip<<'';delete ip;
+cout<<endl;
+//test lista vida
+if(!nl_vida())cout<<"Lista vida!"<<endl;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

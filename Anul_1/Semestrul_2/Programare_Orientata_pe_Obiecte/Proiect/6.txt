@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+
+class Produs {
+private:
+    std::string nume;
+    double pret;
+    int stoc;
+
+public:
+    Produs(const std::string& nume, double pret, int stoc) : nume(nume), pret(pret), stoc(stoc) {}
+
+    void afisare() const {
+        std::cout << nume << ": " << pret << " RON, Stoc: " << stoc << " buc.\n";
+    }
+};
+
+class Magazin {
+private:
+    std::vector<Produs> produse;
+
+public:
+    void adaugaProdus(const Produs& p) {
+        produse.push_back(p);
+    }
+
+    void afisareProduse() const {
+        for (const auto& p : produse) p.afisare();
+    }
+};
+
+int main() {
+    Magazin magazin;
+    magazin.adaugaProdus(Produs("Lapte", 7.5, 20));
+    magazin.adaugaProdus(Produs("Paine", 3.0, 50));
+    magazin.afisareProduse();
+}

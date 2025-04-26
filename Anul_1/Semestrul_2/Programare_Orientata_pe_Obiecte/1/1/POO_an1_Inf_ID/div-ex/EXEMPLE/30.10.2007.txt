@@ -1,0 +1,151 @@
+//dist de editare
+//clasa tip lista
+//dobanda+operatii asupra contului
+#include<iostream.h>
+#include<string.h>
+#include<stdlib.h>
+#include <stdio.h>
+
+class Distance
+{
+  public:
+    int LevenshteinDistance(char const *s, char const *t);
+	char const d;
+    int min(int value1,int value1,int value);
+    
+}; 
+
+int dastanta::min(int value1,int value2,int value3)
+   {int z;
+z=value1;
+if((value2<=z))
+	 z=value2;
+if((value3<=z))
+	 z=value3;
+return(z);	  
+   }
+
+
+int LevenshteinDistance(char s[100],char t[100])
+{
+int d[100][100];
+ for(i=1;i<=m;i++)
+       d[i][0]=i;
+   for(j=1;j<=n;j++)
+       d[0][j]=j;
+ for(i=1;i<=m;i++)
+	 for(j=0;j<n;j++)
+	 {  if(s[i]==t[j]) cost=0;
+	 else{ cost=1;
+	       d[i][j]= min(d[i-1][j]+1,d[i][j-1] + 1,d[i-1][j-1] + cost);  } 
+	 }
+	 return d[m][n];
+	 for(i=1;i<=m;i++)
+ for(j=1;j<=n;j++)
+	 cout<<d[i][j];
+}
+
+void main()
+{
+cout<<"n=";cin>>n;
+cout<<"m=";cin>>m;
+ for(i=1;i<=m;i++)
+	 cin>>a[i];
+  for(i=1;i<=n;i++)
+	 cin>>b[i];
+LevenshteinDistance(a,b);
+
+}
+
+#include<iostream.h>
+#include<conio.h>
+#define SIZE 100
+
+class stiva
+{
+	int stiv[SIZE];
+	int ultim,prim;
+public:
+void init();
+void pune(int i);
+int scoate();
+};
+
+void stiva::init()
+{
+	vis=0;
+}
+
+
+void stiva::pune(int i)
+{
+	if(vis==SIZE){
+			cout<<“stiva plina”;
+			return;
+	}
+stiv[vis]=i;
+vis++;
+}
+
+int stiva::scoate()
+{
+	if(vis==0){
+		cout<<“stiva vida”;
+		return 0;
+	}
+	vis--;
+	return stiv[vis];
+}
+void main()
+{
+stiva stiva1, stiva2; //creez doua obiecte stiva
+stiva1.init();
+stiva2.init();
+stiva1.pune(1);
+stiva2.pune(2);
+stiva1.pune(3);
+stiva2.pune(4);
+cout<<stiva1.scoate()<<“ “;
+cout<<stiva1.scoate()<<“ “;
+cout<<stiva2.scoate()<<“ “;
+cout<<stiva2.scoate()<<“ \n“;
+
+}
+
+#include<iostream.h>
+#include <conio.h>
+#include <string.h>
+#include <stdlib.h>
+
+class ContBancar
+{
+public:
+int dobanda(int suma);
+
+}
+
+int ContBancar::dobanda(int suma)
+{
+suma=suma+suma*0,6;
+cout<<suma;
+return(suma);
+
+}
+
+void main()
+{ int s,s1,p;
+char c;
+ContBancar cont1;
+s=0;
+cout<<"suma care vreti sa o depuneti:";cin>>s1;
+s=s+s1;
+cout<<"vreti sa retrageti bani din cont d/n?";cin>>c;
+cout<<"suma care vreti sa o retrageti:";cin>>p;
+if(c=='d')
+ if(p<=s)
+	 s=s-p;
+ else cout<<"nu aveti bani suficienti";
+cout<<"suma care o aveti in cont:";cout<<s;
+cont1.dobanda(s);
+
+}

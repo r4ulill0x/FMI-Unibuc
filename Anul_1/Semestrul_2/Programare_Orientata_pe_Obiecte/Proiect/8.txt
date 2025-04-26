@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+
+class Angajat {
+private:
+    std::string nume;
+    double salariu;
+
+public:
+    Angajat(const std::string& nume, double salariu) : nume(nume), salariu(salariu) {}
+
+    void afisare() const {
+        std::cout << "Angajat: " << nume << ", Salariu: " << salariu << " RON\n";
+    }
+};
+
+class Firma {
+private:
+    std::vector<Angajat> angajati;
+
+public:
+    void adaugaAngajat(const Angajat& a) {
+        angajati.push_back(a);
+    }
+
+    void afisareAngajati() const {
+        for (const auto& a : angajati) a.afisare();
+    }
+};
+
+int main() {
+    Firma firma;
+    firma.adaugaAngajat(Angajat("Ion Popescu", 4500));
+    firma.adaugaAngajat(Angajat("Maria Ionescu", 5000));
+    firma.afisareAngajati();
+}

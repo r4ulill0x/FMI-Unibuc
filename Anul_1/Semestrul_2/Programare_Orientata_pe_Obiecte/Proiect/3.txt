@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+
+template <typename T>
+class Matrice {
+private:
+    int linii, coloane;
+    std::vector<T> elem;
+
+public:
+    Matrice(int l, int c) : linii(l), coloane(c), elem(l * c) {}
+
+    T* operator[](int i) {
+        return &elem[i * coloane];
+    }
+
+    Matrice operator+(const Matrice& other) const {
+        Matrice result(linii, coloane);
+        for (size_t i = 0; i < elem.size(); i++)
+            result.elem[i] = elem[i] + other.elem[i];
+        return result;
+    }
+
+    Matrice operator-(const Matrice& other) const {
+        Matrice result(linii, coloane);
+        for (size_t i = 0; i < elem.size(); i++)
+            result.elem[i] = elem[i] - other.elem[i];
+        return result;
+    }
+
+    void afisare() const {
+        for (int i = 0; i < linii; i++) {
+            for (int j = 0; j < coloane; j++)
+                std::cout << elem[i * coloane + j] << " ";
+            std::cout << std::endl;
+        }
+    }
+};
+
+int main() {
+    Matrice<int> m1(2, 2), m2(2, 2);
+    
+    m1[0][0] = 1; m1[0][1] = 2;
+    m1[1][0] = 3; m1[1][1] = 4;
+
+    m2[0][0] = 5; m2[0][1] = 6;
+    m2[1][0] = 7; m2[1][1] = 8;
+
+    Matrice<int> suma = m1 + m2;
+    suma.afisare();
+}

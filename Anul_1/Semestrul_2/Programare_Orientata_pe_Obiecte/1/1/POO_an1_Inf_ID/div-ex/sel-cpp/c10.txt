@@ -1,0 +1,439 @@
+//Mostenirea protejata a clasei de baza
+//-------------------------------------
+
+#include <iostream.h>
+
+class baza{
+  protected: int i,j;
+  public:    void setij(int a,int b){i=a;j=b;};
+	     void arataij(void){cout << i << ' ' << endl;};
+};
+class derivata:protected baza{
+  private: int k;
+  public:  void setk(void){
+	      setij(10,12);
+	      k=i*j;};
+	   void arataall(void){
+	      cout << k << ' ';
+	      arataij();};
+};
+void main(void){
+   derivata obiect;
+   //obiect.setij(2,3);Aceasta este o comanda ilegala
+   //deoarece setij este un membru protejat al calsei derivata
+   //obiect.arataij();Aceasta este de asemenea o comanda ilegala
+   obiect.setk();
+   obiect.arataall();
+}
+//===================================================
+
+// Mostenirea multipla
+//---------------------
+
+// Un exemplu simplu
+//--------------------
+
+#include <iostream.h>
+#include <string.h>
+
+class Coperta{
+  public:    Coperta(char *titlu){strcpy(Coperta::titlu,titlu);};
+  protected: char titlu[256];
+};
+
+class Pagina{
+  public:     Pagina(int linii=55){Pagina::linii=linii;};
+  protected:  int linii;
+	      char *text;
+};
+class Carte:public Coperta,public Pagina{
+  public:  Carte(char *autor,char *titlu,float cot):Coperta(titlu),Pagina(60){
+		strcpy(Carte::autor,autor);
+		strcpy(Carte::titlu,titlu);
+		Carte::cost=cost;};
+	   void arata_carte(void){
+	      cout << titlu << endl;
+	      cout << autor << '\t' << cost;};
+  private: char autor[256];
+	   float cost;
+};
+void main(void){
+ Carte text("Jamsa and Klender", "Jamsa's C/C++ Programmmer's Bible",49.95);
+ text.arata_carte();
+}
+//=====================================================
+
+// Ordinea constructorilor si clasele de baza
+//--------------------------------------------
+
+#include <iostream.h>
+
+class Unu{
+  public:  Unu(void){cout << "Constructorul clasei Unu\n";};
+};
+class Doi{
+  public:  Doi(void){cout << "Constructorul calsei 2\n";};
+};
+class Trei{
+  public: Trei(void){ cout << "Constructorul calsei 3\n";};
+};
+class Derivata:public Unu,public Trei,public Doi{
+  public:Derivata(void):Unu(),Doi(),Trei(){
+	    cout << "Apelam constructorul clasei Derivata\n";};
+};
+void main(void){
+  Derivata clasa_mea;
+}
+
+//======================================================
+
+// Declararea unei clase de baza ca privata
+//------------------------------------------
+
+#include <iostream.h>
+
+class Unu{
+  public:Unu(void){
+	   cout << "Constructor pentru Unu\n";
+	   unu=1;};
+	 int unu;
+};
+class Doi{
+  public: Doi(void){
+	    cout << "Constructor pentu Doi\n";
+	    doi=2;};
+	  int doi;
+};
+
+class Trei{
+   public: Trei(void){
+	      cout << "Constructor pentru Trei\n";
+	      trei=3;};
+	   int trei;
+};
+class Derivata:private Unu,private Trei,public Doi{
+  public: Derivata(void):Unu(),Doi(),Trei()
+	     {cout << "Apelat constructor Derivata\n";};
+	  void arata_valoarea(void)
+	     {cout << unu << doi << trei << endl;};
+};
+
+void main(void){
+  Derivata clasa_mea;
+  clasa_mea.arata_valoarea();
+  cout << clasa_mea.doi;
+}
+//===================================================
+
+// Functiile destructor si mostenirea multipla
+//---------------------------------------------
+
+#include <iostream.h>
+
+class Unu{
+   public: Unu(void){ cout << "Constructor pentru Unu\n";};
+	   ~Unu(void){ cout << "Destructor pentru Unu\n";};
+};
+class Doi{
+   public: Doi(void){ cout << "Constructor pentru Doi\n";};
+	   ~Doi(void){ cout << "Destructor pentru Doi\n";};
+};
+class Trei{
+   public: Trei(void){ cout << "Constructor pentru Trei\n";};
+	   ~Trei(void){ cout << "Destructor pentru Trei\n";};
+};
+class Derivata:public Unu,public Doi,public Trei{
+   public: Derivata(void):Unu(),Doi(),Trei(){
+	      cout << "Apelat constructor derivata\n";};
+	   ~Derivata(void){
+	      cout << "Apelat destructor Derivata\n";};
+};
+void main(){
+  Derivata clasa_mea;
+}
+//===================================================
+
+// Conflictele de nume (1)
+//------------------------
+
+#include <iostream.h>
+
+class Baza{
+  public:  void afisare(void){
+	       cout << "Aceasta este calsa Baza" <<endl;};
+};
+class Derivata:public Baza{
+  public: void afisare(void){
+    cout << "Aceasta este clasa Derivata" << endl;};
+};
+void main(void){
+   Derivata clasa_mea;
+   clasa_mea.afisare();
+}
+//======================================================
+
+// Conflictele de nume (2)
+//------------------------
+
+#include <iostream.h>
+
+class Baza{
+  public: void afisare(void){cout << "Aceasta este clasa Baza" << endl;};
+};
+
+class Derivata:public Baza{
+  public:  void afisare(void){ cout<< "Acesta este clasa Derivata" << endl;};
+};
+void main(void){
+  Derivata clasa_mea;
+  clasa_mea.afisare();
+  clasa_mea.Baza::afisare();
+}
+//======================================================
+
+// Executarea constructorilor de catre clasele mostenitoare
+//----------------------------------------------------------
+
+#include <iostream.h>
+
+class baza{
+  public: baza(void){cout << "Construieste clasa baza.\n";};
+	  ~baza(void){cout << "Distruge clasa baza.\n";};
+};
+
+class derivata1: public baza{
+  public: derivata1(void){cout << "Construieste clasa derivata1.\n";};
+	  ~derivata1(void){cout <<"Disteruge casa derivata1.\n";};
+};
+class derivata2: public derivata1{
+  public: derivata2(void){cout << "Construieste clasa derivata2.\n";};
+	  ~derivata2(void){cout <<"Distruge casa derivata2.\n";};
+};
+void main(void){
+ derivata2 obiect;
+}
+//======================================================
+
+// Transmiterea parametrilor constructorilor claselor de baza
+//------------------------------------------------------------
+
+#include <iostream.h>
+
+class baza{
+  protected:int i;
+  public:   baza(int x){
+	       i=x;
+	       cout << "Construieste clasa baza.\n";};
+	    ~baza(void){cout << "Distruge clasa baza.\n";}
+};
+
+class derivata :public baza{
+    int j;
+    public:derivata(int x, int y):baza(y){
+		j=x;
+		cout << "Construieste clasa derivata.\n";}
+	    ~derivata(void){cout <<  "Distruge clasa derivata.\n";}
+	    void arata(void){cout << ", " << endl;}
+};
+void main(void){
+  derivata obiect(3,4);
+  obiect.arata();
+}
+//===================================================
+
+// Declaratiile de acces si clasele derivate
+//--------------------------------------------
+
+#include <iostream.h>
+
+class baza{
+    int i;
+  public: int j,k;
+	  void seti(int x){i=x;};
+	  int redai(void){return i;};
+};
+
+class derivata:private baza{
+  public:  baza::j;
+	   baza::seti;
+	   baza::redai;
+	   int a;
+};
+void main(void){
+  derivata obiect;
+  obiect.j=20;
+  obiect.a=40;
+  obiect.seti(10);
+  cout << obiect.redai() << ", " << obiect.j << ", " << obiect.a;
+}
+//======================================================
+
+// Evitarea ambiguitatilor in clasele de baza
+//--------------------------------------------
+
+//ACEST PROGRAM CONTINE TREI ERORI SI NU SE VA COMPILA
+#include <iostream.h>
+
+class baza{
+  public: int i;
+};
+
+class derivata1:public baza{
+  public: int j;
+};
+
+class derivata2:public baza{
+  public:int k;
+};
+
+class derivata3:public derivata1,public derivata2{
+  public: int sum;
+};
+
+void main(void){
+  derivata3 obiect;
+  obiect.i=10;
+  obiect.j=20;
+  obiect.k=30;
+  obiect.sum=obiect.i+obiect.j+obiect.k;
+  cout << obiect.i << " ";
+  cout << obiect.j << " " << obiect.k << " ";
+  cout << obiect.sum << endl;
+}
+//==================================================
+
+// Clase de baza virtuale
+//------------------------
+
+#include <iostream.h>
+
+class baza{
+  public: int i;
+};
+
+class derivata1: virtual public baza{
+  public: int j;
+};
+
+class derivata2: virtual public baza{
+  public: int k;
+};
+
+class derivata3: public derivata1,public derivata2{
+   public: int suma;
+};
+
+void main(void){
+  derivata3 obiect;
+  obiect.i=10;
+  obiect.j=20;
+  obiect.k=30;
+  obiect.suma=obiect.i+obiect.j+obiect.k;
+  cout << obiect.i << " ";
+  cout << obiect.j << " " << obiect.k  << " ";
+  cout << obiect.suma << endl;
+}
+//==================================================
+
+// Clase friend mutuale
+//-----------------------
+
+#include <iostream.h>
+#include <string.h>
+
+class Stan{
+  public: Stan(char *msj){ strcpy(mesaj,msj);};
+	  void arata_mesaj(void){cout << mesaj << endl;};
+	  friend class Bran;
+	  void arata_bran(class Bran bran);
+   private: char mesaj[256];
+};
+
+class Bran{
+  public: Bran(char *msj){strcpy(mesaj,msj);};
+	  void arata_mesaj(void){cout << mesaj << endl;};
+	  friend class Stan;
+	  void arata_stan(class Stan stan);
+  private: char mesaj[256];
+};
+
+void Stan::arata_bran(class Bran bran){ cout << bran.mesaj << endl;};
+void Bran::arata_stan(class Stan stan){ cout << stan.mesaj << endl;};
+
+void main(void){
+  class Bran bran("Hi,hi,hi...");
+  class Stan stan("Ho,ho,ho...");
+  bran.arata_mesaj();
+  bran.arata_stan(stan);
+  stan.arata_mesaj();
+  stan.arata_bran(bran);
+}
+//====================================================
+
+// Exemplu cu trei nivele de mostenire
+//-------------------------------------
+
+#include <iostream.h>
+
+class Baza{
+  public: void arata_baza(void){ cout << "Mesajul clasei Baza\n";}
+};
+
+class Nivel1:public Baza{
+  public: void arata_nivel1(void){
+	     arata_baza();
+	     cout << "Mesajul clasei Nivel 1\n";};
+};
+
+class Nivel2:public Nivel1{
+  public: void arata_nivel2(void){
+	       arata_nivel1();
+	       cout << "Mesajul clasei Nivel 2 \n";};
+};
+
+class Nivel3:public Nivel2{
+   public:  void arata_nivel3(void){
+	       arata_nivel2();
+	       cout << "Mesajul clasei Nivel 3 \n";
+	    };
+};
+void main(void){
+   Nivel3 datele_mele;
+   datele_mele.arata_nivel3();
+}
+//=====================================================
+
+// Utilizarea membrilor de tip protected in clasele derivate
+//-----------------------------------------------------------
+
+#include <iostream.h>
+#include <string.h>
+
+class Baza{
+  public: Baza(char *sir){ strcpy(mesaj,sir);};
+	  void arata_baza(void){
+	     cout << mesaj << endl;};
+  protected: char mesaj[256];
+};
+
+class Nivel1:public Baza{
+    public: Nivel1(char *sir,char *baza):Baza(baza){strcpy(mesaj,sir);};
+	    void arata_nivel1(void){cout << mesaj << endl;};
+    protected: char mesaj[256];
+};
+
+class De_jos: public Nivel1{
+   public:  De_jos(char *sir,char *nivel1,char *baza):Nivel1(nivel1,baza){
+	       strcpy(mesaj,sir);};
+	    void arata_de_jos(void){
+		arata_baza();
+		arata_nivel1();
+		cout << mesaj << endl;
+	      };
+   protected: char mesaj [256];
+};
+
+void main(void){
+ De_jos jos("Mesajul clasei De_jos","Mesajul clasei Nivel1","Mesajul clasei Baza");
+ jos.arata_de_jos();
+}

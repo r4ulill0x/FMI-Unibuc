@@ -1,0 +1,92 @@
+#include <iostream>
+#include <numeric> // Pentru std::gcd
+
+// Clasă generică pentru fracții
+template <typename T>
+class Fractie {
+private:
+    T numarator;
+    T numitor;
+
+    void simplifica() {
+        T gcd = std::gcd(numarator, numitor);
+        numarator /= gcd;
+        numitor /= gcd;
+        if (numitor < 0) {
+            numarator = -numarator;
+            numitor = -numitor;
+        }
+    }
+
+public:
+    // Constructori
+    Fractie(T num = 0, T den = 1) : numarator(num), numitor(den) {
+        if (den == 0) throw std::invalid_argument("Numitorul nu poate fi zero.");
+        simplifica();
+    }
+
+    // Constructor de copiere
+    Fractie(const Fractie& other) : numarator(other.numarator), numitor(other.numitor) {}
+    
+    // Operatori aritmetici
+    Fractie operator+(const Fractie& other) const {
+        return Fractie(numarator * other.numitor + other.numarator * numitor, numitor * other.numitor);
+    }
+    
+    Fractie operator-(const Fractie& other) const {
+        return Fractie(numarator * other.numitor - other.numarator * numitor, numitor * other.numitor);
+    }
+    
+    Fractie operator*(const Fractie& other) const {
+        return Fractie(numarator * other.numarator, numitor * other.numitor);
+    }
+    
+    Fractie operator/(const Fractie& other) const {
+        return Fractie(numarator * other.numitor, numitor * other.numarator);
+    }
+
+    // Operatori de comparatie
+    bool operator==(const Fractie& other) const {
+        return numarator == other.numarator && numitor == other.numitor;
+    }
+    
+    // Operator de conversie
+    operator double() const {
+        return static_cast<double>(numarator) / numitor;
+    }
+
+    // Operator de atribuire
+    Fractie& operator=(const Fractie& other) {
+        if (this != &other) {
+            numarator = other.numarator;
+            numitor = other.numitor;
+        }
+        return *this;
+    }
+
+    // Afisare
+    friend std::ostream& operator<<(std::ostream& os, const Fractie& f) {
+        os << f.numarator << "/" << f.numitor;
+        return os;
+    }
+};
+
+// Testare
+int main() {
+    Fractie<int> f1(3, 4);
+    Fractie<int> f2(5, 6);
+    Fractie<int> suma = f1 + f2;
+    Fractie<int> diferenta = f1 - f2;
+    Fractie<int> produs = f1 * f2;
+    Fractie<int> cat = f1 / f2;
+    
+    std::cout << "f1: " << f1 << "\n";
+    std::cout << "f2: " << f2 << "\n";
+    std::cout << "Suma: " << suma << "\n";
+    std::cout << "Diferenta: " << diferenta << "\n";
+    std::cout << "Produs: " << produs << "\n";
+    std::cout << "Cat: " << cat << "\n";
+    std::cout << "Conversie la double: " << static_cast<double>(f1) << "\n";
+    
+    return 0;
+}

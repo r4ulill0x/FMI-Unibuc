@@ -1,0 +1,43 @@
+# Procese, semanle, tuburi:
+
+
+1. Scrieti un program care primeste ca argumente in linia de comanda un
+numar ’n’ si o posibila linie de comanda ’com arg1 ... argk’ (k ≥ 0) si
+realizeaza efectul comenzii ’nice -n com arg1 ... argk’.
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+
+void print_usage(const char *prog_name) {
+    fprintf(stderr, "Utilizare: %s <n> <com> [arg1 ... argk]\n", prog_name);
+    exit(1);
+}
+
+int main(int argc, char *argv[]) {
+    if (argc < 3) {
+        print_usage(argv[0]);
+    }
+
+    // Extragem valoarea niceness (primul argument)
+    int niceness = atoi(argv[1]);
+    if (niceness == 0 && argv[1][0] != '0') {
+        fprintf(stderr, "Eroare: Niceness trebuie să fie un număr întreg valid.\n");
+        return 1;
+    }
+
+    // Setăm prioritatea procesului
+    if (nice(niceness) == -1 && errno != 0) {
+        perror("Eroare la setarea niceness");
+        return 1;
+    }
+
+    // Rulăm comanda cu argumentele sale
+    execvp(argv[2], &argv[2]);
+
+    // Dacă execvp eșuează
+    perror("Eroare la executarea comenzii");
+    return 1;
+}

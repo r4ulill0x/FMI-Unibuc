@@ -1,0 +1,18 @@
+#include <iostream.h>
+
+class baza{
+  public: baza(void){cout << "Construieste clasa baza.\n";};
+	  ~baza(void){cout << "Distruge clasa baza.\n";};
+};
+
+class derivata1: public baza{
+  public: derivata1(void){cout << "Construieste clasa derivata1.\n";};
+	  ~derivata1(void){cout <<"Distruge casa derivata1.\n";};
+};
+class derivata2: public derivata1{
+  public: derivata2(void){cout << "Construieste clasa derivata2.\n";};
+	  ~derivata2(void){cout <<"Disteruge casa derivata2.\n";};
+};
+void main(void){
+ derivata2 obiect;
+}

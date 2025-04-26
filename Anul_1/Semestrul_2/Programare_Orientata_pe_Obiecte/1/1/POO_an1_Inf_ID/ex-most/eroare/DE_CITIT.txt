@@ -1,0 +1,2 @@
+Fișierel sursă C++ din acest director conțin erori.
+Să se explice.

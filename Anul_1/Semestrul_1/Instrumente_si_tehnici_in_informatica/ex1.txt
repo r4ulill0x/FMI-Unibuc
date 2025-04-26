@@ -1,0 +1,66 @@
+# Utilizatori si grupuri:
+
+
+1. Implementati functia ’getpwnam()’ folosind functiile ’setpwent()’,
+’getpwent()’ si ’endpwent()’. Utilizati aceasta functie intr-un program care
+primeste ca argument in linia de comanda un username si afiseaza informatia
+’gecos’ asociata.
+
+
+#!/bin/bash
+
+get_gecos_by_username() {
+    local username="$1"
+    
+    while IFS=: read -r user pass uid gid gecos home shell; do
+        if [[ "$user" == "$username" ]]; then
+            echo "$gecos"
+            return 0
+        fi
+    done < /etc/passwd
+
+    echo "Utilizatorul $username nu a fost găsit." >&2
+    return 1
+}
+
+# Verifică dacă a fost dat un argument
+if [[ $# -ne 1 ]]; then
+    echo "Utilizare: $0 <username>"
+    exit 1
+fi
+
+get_gecos_by_username "$1"
+
+------------------------------------------
+
+# Fisiere, directoare:
+
+1. Scrieti un program care primeste ca argumente in linia de comanda doua
+fisiere ’f1’ si ’f2’ si realizeaza efectul comenzii ’grep -f f1 f2’. Se vor folosi functii de nivel superior (tipul ’FILE’).
+
+
+
+
+#!/bin/bash
+
+get_gecos_by_username() {
+    local username="$1"
+    
+    while IFS=: read -r user pass uid gid gecos home shell; do
+        if [[ "$user" == "$username" ]]; then
+            echo "$gecos"
+            return 0
+        fi
+    done < /etc/passwd
+
+    echo "Utilizatorul $username nu a fost găsit." >&2
+    return 1
+}
+
+# Verifică dacă a fost dat un argument
+if [[ $# -ne 1 ]]; then
+    echo "Utilizare: $0 <username>"
+    exit 1
+fi
+
+get_gecos_by_username "$1"

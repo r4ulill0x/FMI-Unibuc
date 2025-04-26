@@ -1,0 +1,28 @@
+# Procese, semanle, tuburi:
+
+
+1. Scrieti un program care primeste ca argumente in linia de comanda un
+numar ’n’ si o posibila linie de comanda ’com arg1 ... argk’ (k ≥ 0) si
+realizeaza efectul comenzii ’nice -n com arg1 ... argk’.
+
+
+#!/bin/bash
+
+# Verificăm dacă sunt suficiente argumente
+if [[ $# -lt 2 ]]; then
+    echo "Utilizare: $0 <n> <com> [arg1 ... argk]"
+    exit 1
+fi
+
+# Extragem valoarea niceness și comanda
+niceness="$1"
+shift # Eliminăm primul argument (n) din listă
+
+# Verificăm dacă n este un număr valid
+if ! [[ "$niceness" =~ ^-?[0-9]+$ ]]; then
+    echo "Eroare: Niceness trebuie să fie un număr întreg."
+    exit 1
+fi
+
+# Rulăm comanda cu prioritatea modificată
+exec nice -n "$niceness" "$@"

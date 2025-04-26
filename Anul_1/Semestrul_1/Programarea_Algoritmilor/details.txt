@@ -1,0 +1,5 @@
+Programarea Algoritmilor / Programare Procedurala - Liviu-Dinu  ldinu@fmi.unibuc.ro
+
+Limbaj in C. 
+
+Examen final scris, 1-2 teme/probleme scris cod (un program in C). (Sa se prezinte principalele instructiuni repetitive din limbaj, sir si operatii pe sir sa se obtina X, probleme standard). Sa nu fie erori repetitive si mari.

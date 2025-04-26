@@ -1,0 +1,230 @@
+complex ::operator double()
+complex ::operator pozitie()
+//==========================//
+
+complex (double)
+complex (pozitie)
+//===========================//
+
+#include <iostream.h>
+class complex {
+
+      //re=partea reala,im=partea imaginara
+      float re,im;
+ public:
+      complex(float r=0,float i=0) //constructor, 
+                                   //utilizat si pentru conversie float-->complex
+      { re=r;im=i; 
+      cout<<"constructor,";afisare();}
+      complex(complex & c) //constructor copiere
+      { re=c.re;im=c.im;
+      cout<<"constructor,copiere";afisare();}
+      operator float() //conversie complex-->float
+      {   cout<<"apel float(),re="<<re;
+          cout<<",im="<<im<<'';return re;}
+void afisare()
+{   cout<<"re="<<re;
+    cout<<",im="<<im<<' \n';}
+};
+
+void fct(float r)//functie de test
+{cout<<"apel fct("<<r<<")\n";)
+void main()
+{
+    complex c1(1,1),c2(2,2);
+    float r1=0,r2=0;
+//1.conversie explicita
+  r1=(float)c1;
+  cout<<"r1="<<r1<<'\n';
+//2.conversie implicita la atribuire
+  r2=c2;
+  cout<<"r2="<<r2<<'\n';
+//conversie la transferul parametrilor
+  fct(r1);
+//3.apel fara conversie
+  fct(c1);
+//4.conversie implicita
+//conversii la evaluarea expresiilor
+//5.conversie implicita c1-->float
+  r1=c1+r1;
+  cout<<"r1="<<r1<<'\n';
+//6.conversii implicite c1,c2-->float
+  r2=c1+c2;
+  cout<<"r2="<<r2<<'\n';
+//7.conversii implicite c2-->float-->double
+  r2=c2+4.55;
+  cout<<"r2="<<r2<<'\n';
+}
+//=======================================//
+
+class  complex;    //declaratie incompleta
+class pozitie{
+      int x,y;
+      public:
+      ..................
+      operator complex();//prototip operator
+      ..................
+};
+class complex{
+      float re,im;
+      public:
+      ..................
+      friend pozitie::operator complex();
+      ..................
+};
+//definitia functiei  operator
+pozitie::operator complex()
+{  complex c;c.re=x;c.im=y;return c;}
+//=========================================//
+
+void cfct(complex);  // functie de test
+{   cout<<"apel cfct,';c.afisare;   }
+void main()
+{   complex c1(1,1),c2(2,2);
+    float r1=10,r2=20;
+    ...................
+//conversie explicita
+    c1=complex(r1);
+    c1.afisare();
+//conversie implicita la atribuire
+    c2=r2;c1.afisare();
+//conversie implicita la transfer de parametrii
+    cfct(r1);
+    }
+//============================================//
+
+
+class pozitie;   //declaratie incompleta
+class complex{
+      float re,im;
+      public:
+      ...................
+      complex(pozitie);   //prototip constructor
+      ...................
+};
+class pozitie{
+      int x,y;
+public:
+..........................
+     friend complex::complex(pozitie);
+     ...............
+};
+//definitie constructor
+complex::complex(pozitie p)
+{   re=p.x;im=p.y;}
+//=======================================//
+
+
+class complex{
+      float re,im;
+public:
+     complex(float r=0,float i=0)   //constructor
+     {    re =r;im=i;
+          cout<<"constr.cmplx.";
+          afisare();  cout<<'\n';}
+     //constructor copiere
+     complex (complex  & c)
+     {  re=c.re;im=c.im;
+        cout<<"constr.cmplx.comp.";
+        afisare();  cout<<'\n';}
+void afisare()const
+{      cout<<''<<re<<"+j"<<im;}
+const complex&operator=
+                    (const double & d)
+{   re=d;im=0;
+     cout<<"op=cmplx<-double:";
+     afisare();
+     cout<<'='<<d<<'\n';
+     return *this;
+     }
+friend complex operator+(complex,complex);
+};
+complex operator+(complex a,complex b)
+{   cout <<"op+cmplx.";
+     a.afisare();  cout<<"+";
+     b.afisare();  cout<<'\n';
+     return complex(a.re+b.re,a.im+b.im);}
+void main ()
+{
+    complex c(1.1,1.1),r;
+    cout<<'\n';r=10.5;
+    cout<<"r=";r.afisare();cout<<"\n \n";
+    r=c+2.2;
+    cout<<"r=";r.afisare();cout<<"\n\n";
+    r=2.2+c;
+    cout<<"r=";r.afisare();
+}
+//========================================//
+
+2.5+c
+//=========================================//
+
+(2.5).operator+(c)
+//===========================================//
+
+class complex;//declaratie incompleta
+class pozitie {
+protected:
+   int x,y;     //coordonate
+public:
+    pozitie(int abs=0,int ord=0)//constructor
+    {  x=abs; y=ord;
+       cout<<"Constr.poz.";afisare();}
+    pozitie(pozitie &p)//constructor copiere
+    {  x=p.x;y=p.y;
+    cout<<"constr.poz.cop.";afisare();}
+    void afisare()
+    {  cout<<"x="<<x;
+       cout<<",y="<<y<<'\n';}
+    operator complex();
+};
+class complex{
+      float re,im;
+public:
+     complex(float r=0,float i=0)//constructor
+     {...........}
+     //constructor copiere
+     complex (complex &c)
+     {...........}
+     void afisare() const
+     {cout<<''<<re<<"+j"<<im;}
+     const complex& operator=(const double &d)
+     {............}
+     friend complex operator+(complex,complex);
+     friend pozitie::operator complex();
+};
+pozitie::operator complex()
+{   cout<<"Op.cmplx<--poz.";
+    complex c;c.re=x;c.im=y;
+    c.afisare();
+    cout<<"<--("<<x<<",<<y<<")\n";
+    return c;  }
+complex operator +(complex a, complex b)
+{   cout<<"Op+cmplx.";
+    a.afisare();
+    cout<<"+";
+    b.afisare();
+    cout<<'\n';
+    return complex (a.re+b.re,a.im+b.im);}
+void main()
+{
+   complex c1(1.1,1.1),r;
+   pozitie p1(10,10),p2(20,20);
+   cout<<'\n';
+   r=p1+p2;
+   //complex =pozitie +pozitie
+   cout<<"r=";r.afisare(); cout<<"\n\n";
+   r=p1+2.2;
+   //complex =pozitie +double
+   cout<<"r=";r.afisare();
+}
+//===================================================//
+
+
+
+
+
+
+
+
+

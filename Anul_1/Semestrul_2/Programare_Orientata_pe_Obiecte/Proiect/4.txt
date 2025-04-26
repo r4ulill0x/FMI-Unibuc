@@ -1,0 +1,31 @@
+#include <iostream>
+
+class ContBancar {
+private:
+    std::string nume;
+    double sold;
+
+public:
+    ContBancar(const std::string& nume, double sold_initial) : nume(nume), sold(sold_initial) {}
+
+    void depune(double suma) {
+        sold += suma;
+    }
+
+    bool retrage(double suma) {
+        if (suma > sold) return false;
+        sold -= suma;
+        return true;
+    }
+
+    void afisare() const {
+        std::cout << "Titular: " << nume << ", Sold: " << sold << " RON\n";
+    }
+};
+
+int main() {
+    ContBancar cont("Popescu Ion", 1000);
+    cont.depune(500);
+    cont.retrage(200);
+    cont.afisare();
+}

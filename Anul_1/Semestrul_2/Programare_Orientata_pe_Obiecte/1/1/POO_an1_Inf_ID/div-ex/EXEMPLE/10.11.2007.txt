@@ -1,0 +1,168 @@
+#include<iostream.h>
+#include<iomanip.h>
+#include<string.h>
+#include<conio.h>
+
+class cladire
+{
+public:
+cladire()
+	{}
+cladire(char *adresa)                 //constructor cu parametru
+  {strcpy(cladire::adresa,adresa);}
+void arata_adresa()
+  {cout<<"adresa: "<<adresa<<endl;}
+protected:
+char adresa[50];
+int etaj,camere;
+float suprafata;
+void arata_suprafata(){cout<<"suprafata: "<<suprafata<<endl;}
+void arata_etaje(){cout<<"numar etaje: "<<etaj<<endl;}
+void arata_camere(){cout<<"numar incaperi: "<<camere<<endl;}
+};
+
+class scoala : protected cladire
+{
+public:
+scoala(){}
+scoala(char *adresa,char *nume,int numar_elevi): cladire(adresa)
+{
+strcpy(scoala::nume,nume);
+suprafata=1000;
+etaj=4;
+camere=32;
+}
+void arata_scoala()
+{
+arata_adresa();
+arata_suprafata();
+arata_etaje();
+arata_camere();
+cout<<"nume cladire: "<<nume<<endl<<"numar persoane: "<<numar_elevi;
+};
+private:
+char nume[50];
+int numar_elevi;
+};
+
+
+class universitate : protected scoala
+{
+public:
+universitate(char *adresa,char *nume,int numar_amfiteatre)
+{
+strcpy(universitate::nume,nume);
+strcpy(universitate::adresa,adresa);
+suprafata=1200;
+etaj=3;
+camere=800;
+cout<<"numar amfiteatre: "<<numar_amfiteatre<<endl;
+}
+void arata_universitate()
+{
+arata_suprafata();
+arata_etaje();
+arata_camere();
+arata_adresa();
+};
+private:
+char nume[50];
+int numar_amfiteatre;
+};
+
+class gradinita : protected scoala
+{
+public:
+gradinita(char *adresa,char *nume,int numar_dormitoare)
+{
+strcpy(gradinita::nume,nume);
+strcpy(gradinita::adresa,adresa);
+suprafata=800;
+etaj=2;
+camere=27;
+cout<<"numar dormitoare: "<<numar_dormitoare<<endl;
+}
+void arata_gradinita()
+{
+arata_adresa();
+arata_suprafata();
+arata_etaje();
+arata_camere();
+};
+private:
+char nume[50];
+int numar_dormitoare;
+};
+
+class casa : public cladire
+{
+public:
+casa(char *adresa,char *proprietar,char *telefon): cladire(adresa)
+{
+strcpy(casa::proprietar,proprietar);
+strcpy(casa::telefon,telefon);
+suprafata=20;
+etaj=3;
+camere=32;
+}
+void arata_casa()
+{
+arata_adresa();
+arata_suprafata();
+arata_etaje();
+arata_camere();
+cout<<"nume persoana: "<<proprietar<<endl<<"numar telefon: "<<telefon;
+};
+private:
+char proprietar[50],telefon[11];
+};
+
+class spital : public cladire
+{
+public:
+spital(char *adresa,int numar_pacienti): cladire(adresa)
+{
+suprafata=2000;
+etaj=4;
+camere=800;
+}
+void arata_spital()
+{
+arata_adresa();
+arata_suprafata();
+arata_etaje();
+arata_camere();
+cout<<"numar pacienti: "<<numar_pacienti;
+};
+private:
+int numar_pacienti;
+};
+
+
+void main()
+{
+cout<<"SCOALA:"<<endl;
+scoala scoala1("strada molidului nr 12-14","dragos voda",700);
+scoala1.arata_scoala();
+getch();
+clrscr();
+cout<<"CASA:"<<endl;
+casa casa1("b-dul regina elisabeta 25","marina","0727345678");
+casa1.arata_casa();
+getch();
+clrscr();
+cout<<"SPITAL:"<<endl;
+spital spital1("b-dul regina elisabeta 25",200);
+spital1.arata_spital();
+getch();
+clrscr();
+cout<<"UNIVERSITATE:"<<endl;
+universitate universitate1("b-dul regina elisabeta 25","universitatea
+ bucuresti",200);
+universitate1.arata_universitate();
+getch();
+clrscr();
+cout<<"GRADINITA:"<<endl;
+gradinita gradinita1("b-dul ion creanga numarul 12","piticot",123);
+gradinita1.arata_gradinita();
+}

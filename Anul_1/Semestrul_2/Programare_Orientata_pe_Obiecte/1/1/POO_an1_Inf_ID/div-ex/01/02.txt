@@ -1,0 +1,70 @@
+//sa se implementeze toate functiile delcarate in clasa coada
+//folosind o lista dublu inlatuita de obiecte alocate
+//dinamic de tip nod
+#include<iostream.h>
+class nod{
+ static unsigned long counter;
+public:
+    unsigned long id;
+ double val;
+nod * prev, *next;
+    nod(double v, nod* p, nod* s)
+    {
+        counter++;
+        id=counter;
+        val=v;
+        prev=p;
+        next=s;
+        cout<<"s-a creat obiectul "<<id<<endl;
+    }
+    nod(double v)
+    {
+      counter++;
+        id=counter;
+        val=v;
+        prev=NULL;
+        next=NULL;
+        cout<<"s-a creat obiectul "<<id<<endl;
+    }
+    nod()
+    {
+ counter++;
+        id=counter;
+        val=0;
+        prev=NULL;
+        next=NULL;
+        cout<<"s-a creat obiectul "<<id<<endl;    
+    }
+    ~nod()
+    {
+        cout<<"s-a distrus obiectul "<<id<<endl;
+    }
+};
+class coada{
+    unsigned long lungime;
+    nod *first,*last;
+public:
+    double front(); // returneaza val primului element din coada fara
+ sa-l extraga
+    double back(); // returneaza val ultimului element din coada fara
+ sa-l extraga
+    double push(double v); // introduce un element la sf cozii
+    double pop(); // returneaza val primului element din coada si il
+ sterge
+    unsigned long size();// returneaza lungimea cozii
+    bool empty();// true dk coada e vida
+    coada()
+    {
+        lungime =0;
+        first=last=NULL;
+    }
+};
+// exemplu de definire a unei functii
+bool nod::empty(){
+ if(counter == 0) return true;
+ else return false;
+}
+// sa se implementeze restul functiilor
+int main(){
+    return 0;
+}

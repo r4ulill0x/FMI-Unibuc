@@ -1,0 +1,19 @@
+polimorfism
+#include <iostream.h>
+class principala{
+public:
+virtual int adunare(int a,int b){return a+b;};
+virtual int inmultire(int a, int b){return a*b;};
+};
+class matematica :public principala
+{
+virtual int inmultire(int a,int b)
+{cout<<a*b<<endl;
+return a*b;};
+};
+void main()
+{
+principala *princ=new matematica;
+cout<<princ->adunare(2,2)<<endl;
+princ->inmultire(3,3);
+}

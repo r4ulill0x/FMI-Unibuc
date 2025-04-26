@@ -1,0 +1,23 @@
+//var statica
+#include<iostream.h>
+
+class statice     //cream clasa statice
+{
+static int x;   //declaram variabila statica x
+static int y;   //declaram variabila statica y
+public:
+void afiseaza()
+{
+cout<<"static::x = "<<x<<endl; //afisam x
+cout<<"static::y = "<<y<<endl; //afisam y
+}
+};
+
+int statice::x=1;      //x ia valoarea 1
+int statice::y=x+1;    //y ia val x+1
+
+int main()
+{
+statice a;
+a.afiseaza();   
+}

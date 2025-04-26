@@ -1,0 +1,130 @@
+#include<iostream.h>
+#include<iomanip.h>
+#include<string.h>
+
+class sir  //creez clasa sir
+{
+public:
+sir operator +(char *sir_adaug);
+sir(char *in_sir)
+{strcpy(prim,in_sir);
+lung=strlen(prim);
+}
+sir(void){lung=0;};
+void afisare()      
+{cout<<prim;};
+
+private:
+char prim[100]; //TEMA: ALOCARE DINAMICA (VARIANTE)
+int lung;
+};
+
+sir sir::operator +(char *sir_adaug)
+{
+sir nou;
+int lungime_nou;
+lungime_nou=strlen(prim)+strlen(sir_adaug)+1;//lungimea sirului final
+ este lungimea primului sir +lungimea celui de-al doilea +1 (porneste de
+ la 0)
+lung=lungime_nou;  //lungimea sirului este noua lungime
+strcpy(nou.prim,prim);   //copiaza in nou.prim primul sir
+strcat(nou.prim,sir_adaug); //in nou prim adauga si cel de-al doilea
+ sir
+return nou;
+}
+
+void main()
+{
+sir text("1 decembrie");
+text=text+" 2007";
+text.afisare();//afiseaza sirul
+}
+---------------------------------------------------------------------------
+#include<iostream.h>
+#include<math.h>
+
+class complex
+{	
+			double x, y;
+		public:
+			complex(double a,double b)
+						{x=a; y=b;}
+		
+					double partea_reala() 
+						{return x;}
+		
+					double partea_imag() 
+						{return y;}
+		
+					complex conj()
+						{return complex(x,-y);}
+		
+					double modul()
+						{return sqrt(x*x+y*y);}
+					
+					complex adunare(complex c);
+
+					complex scadere(complex c);
+
+					complex inmultire(complex c);
+
+					complex impartire(complex c);
+
+					
+					complex operator +(complex c);
+
+					complex operator -(complex c);
+
+					complex operator *(complex c);
+
+					complex operator /(complex c);
+
+
+		void afisare(){cout<<x<<"+"<<y<<"i"<<endl;}
+};
+			complex complex::adunare(complex c)
+				{return complex(x+c.x, y+c.y);}
+
+			complex complex::scadere(complex c)
+				{return complex(x-c.x, y-c.y);}
+
+			complex complex::inmultire(complex c)
+				{return complex(x*c.x-y*c.y, x*c.y+y*c.x);}
+
+			complex complex::impartire(complex c)
+			{return complex
+ ((x*c.x+y*c.y)/(c.x*c.x-c.y*c.y),(c.x*y-x*c.y)/(c.x*c.x-c.y*c.y));}
+			
+			complex complex::operator +(complex c)
+			{return this->adunare(c);}
+				complex complex::operator -(complex c)
+					{return this->scadere(c);}
+				complex complex::operator *(complex c)
+					{return this->inmultire(c);}
+				complex complex::operator /(complex c)
+					{return this->impartire(c);}
+			
+
+	
+int main()
+{
+	complex c1(2,3),c2(1,7);
+	c1.afisare();
+	c2.afisare();
+		
+		complex suma=c1+c2;
+		suma.afisare();
+
+		complex scade=c1-c2;
+		scade.afisare();
+
+		complex imparte=c1/c2;
+		imparte.afisare();
+
+		complex inmulteste=c1*c2;
+		inmulteste.afisare();
+	
+	return 0;
+}
+
+Plain Text Attachment [ Scan and Save 

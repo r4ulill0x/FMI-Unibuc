@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+
+class Vehicul {
+private:
+    std::string marca;
+    int anFabricatie;
+
+public:
+    Vehicul(const std::string& marca, int an) : marca(marca), anFabricatie(an) {}
+
+    void afisare() const {
+        std::cout << "Marca: " << marca << ", An: " << anFabricatie << "\n";
+    }
+};
+
+class Flota {
+private:
+    std::vector<Vehicul> vehicule;
+
+public:
+    void adaugaVehicul(const Vehicul& v) {
+        vehicule.push_back(v);
+    }
+
+    void afisareVehicule() const {
+        for (const auto& v : vehicule) v.afisare();
+    }
+};
+
+int main() {
+    Flota flota;
+    flota.adaugaVehicul(Vehicul("Dacia", 2015));
+    flota.adaugaVehicul(Vehicul("Toyota", 2020));
+    flota.afisareVehicule();
+}

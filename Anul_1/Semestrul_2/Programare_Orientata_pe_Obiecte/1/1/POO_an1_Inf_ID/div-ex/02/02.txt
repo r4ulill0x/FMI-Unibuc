@@ -1,0 +1,53 @@
+// spec1_explicit.cpp
+// compile with: /EHsc
+#include <stdio.h>
+
+class C 
+{
+public:
+    int i;
+    explicit C(const C&)   //  constructor de copiere explicit
+    {
+        printf_s("\nin constructor de copiere");
+    }
+    explicit C(int i )   // constructor explicit
+    {
+        printf_s("\nin constructor");
+    }
+
+    C()
+    {
+        i = 0;
+    }
+};
+
+class C2
+{
+public:
+    int i;
+    explicit C2(int i )   //  constructor explicit
+    {
+    } 
+};
+
+C f(C c)
+{   
+    c.i = 2;
+    return c;   // ?
+}
+
+void f2(C2)
+{
+}
+
+void g(int i)
+{
+    f2(i);   // ?
+    // f2(C2(i));
+}
+
+int main()
+{
+    C c, d;
+    d = f(c);   // ?
+}

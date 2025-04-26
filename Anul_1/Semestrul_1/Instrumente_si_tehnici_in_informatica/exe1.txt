@@ -1,0 +1,119 @@
+# Utilizatori si grupuri:
+
+
+1. Implementati functia ’getpwnam()’ folosind functiile ’setpwent()’,
+’getpwent()’ si ’endpwent()’. Utilizati aceasta functie intr-un program care
+primeste ca argument in linia de comanda un username si afiseaza informatia
+’gecos’ asociata.
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <pwd.h>
+#include <string.h>
+
+void get_gecos_by_username(const char *username) {
+    struct passwd *pwd_entry;
+
+    // Inițializează baza de date a utilizatorilor
+    setpwent();
+
+    // Parcurge toți utilizatorii
+    while ((pwd_entry = getpwent()) != NULL) {
+        if (strcmp(pwd_entry->pw_name, username) == 0) {
+            printf("GECOS: %s\n", pwd_entry->pw_gecos);
+            endpwent(); // Închide baza de date a utilizatorilor
+            return;
+        }
+    }
+
+    // Închide baza de date a utilizatorilor
+    endpwent();
+    fprintf(stderr, "Utilizatorul %s nu a fost găsit.\n", username);
+}
+
+int main(int argc, char *argv[]) {
+    // Verifică numărul de argumente
+    if (argc != 2) {
+        fprintf(stderr, "Utilizare: %s <username>\n", argv[0]);
+        return 1;
+    }
+
+    const char *username = argv[1];
+    get_gecos_by_username(username);
+
+    return 0;
+}
+
+
+------------------------------------------
+
+# Fisiere, directoare:
+
+1. Scrieti un program care primeste ca argumente in linia de comanda doua
+fisiere ’f1’ si ’f2’ si realizeaza efectul comenzii ’grep -f f1 f2’. Se vor folosi functii de nivel superior (tipul ’FILE’).
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Funcție care verifică dacă o linie din f2 se potrivește cu oricare linie din f1
+int matches(const char *line, FILE *f1) {
+    char pattern[1024];
+    
+    // Resetează poziția pointerului de fișier
+    rewind(f1);
+
+    // Parcurgem fiecare linie din f1
+    while (fgets(pattern, sizeof(pattern), f1)) {
+        // Eliminăm newline-ul de la final
+        char *newline = strchr(pattern, '\n');
+        if (newline) *newline = '\0';
+
+        // Verificăm dacă linia din f2 conține modelul din f1
+        if (strstr(line, pattern)) {
+            return 1; // Potrivire găsită
+        }
+    }
+
+    return 0; // Nicio potrivire
+}
+
+void grep_simulator(const char *file1, const char *file2) {
+    FILE *f1 = fopen(file1, "r");
+    FILE *f2 = fopen(file2, "r");
+
+    if (!f1 || !f2) {
+        perror("Eroare la deschiderea fișierelor");
+        exit(1);
+    }
+
+    char line[1024];
+
+    // Parcurgem fiecare linie din f2
+    while (fgets(line, sizeof(line), f2)) {
+        if (matches(line, f1)) {
+            printf("%s", line);
+        }
+    }
+
+    fclose(f1);
+    fclose(f2);
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        fprintf(stderr, "Utilizare: %s <f1> <f2>\n", argv[0]);
+        return 1;
+    }
+
+    const char *file1 = argv[1];
+    const char *file2 = argv[2];
+
+    grep_simulator(file1, file2);
+    return 0;
+}
+

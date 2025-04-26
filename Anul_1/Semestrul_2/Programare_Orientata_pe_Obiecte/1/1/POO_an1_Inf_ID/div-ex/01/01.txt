@@ -1,0 +1,166 @@
+//backtracking
+//prog dinamica
+//cel mai lung subsir
+#include<iostream.h>
+
+int x[100],n,aux;
+
+void schimb(int &a,int &b)
+{ aux=a;
+a=b;
+b=aux;
+}
+
+void divide(int s,int d,int &m)
+{
+int i=s,j=d,pi=0,pj=1;
+while(i<j)
+  {if(x[i]>x[j])
+     {schimb(x[i],x[j]);
+      schimb(pi,pj);}
+     i=i+pi;
+     j=j-pj;}
+  m=i;
+}
+
+void quicksort(int s,int d)
+{int m;
+if(s<d)
+{
+divide(s,d,m);
+quicksort(s,m-1);
+quicksort(m+1,d);}}
+
+void main()
+{
+int i;
+cout<<"n=";cin>>n;
+for(i=1;i<=n;i++)
+{cout<<"x["<<i<<"]=";cin>>x[i];}
+quicksort(1,n);
+cout<<"vectorul sortat:";
+for(i=1;i<=n;i++)
+cout<<x[i]<<" ";
+}
+
+#include<fstream.h>
+
+int n,k,a[20],p[20],l[20];
+
+fstream f("D:\\kituri\\ioana\\programe\\poo2\\prog_din.txt",ios::in);
+
+void citeste()
+{
+int i;
+f>>n;
+for(i=1;i<=n;i++)
+f>>a[i];
+f.close();
+}
+
+/*initealizeaza elementul n al vectorilor l(pentru memorarea
+ lungimilor
+ maxime) si p
+(memorarea indicelui urmator din subsir)*/
+void init()
+{l[n]=1;
+p[n]=n;
+}
+
+/*calculeaza valoarea solutiei optime ()lungimea maxima a
+subsirurilor care incep cu fiecare element a[i] din sir */
+void p_dinamica()
+{int i,j;
+for(i=n;i>=1;i--)
+  {l[i]=1;
+   p[i]=i;
+    for(j=i+1;j<=n;j++)
+      if(a[i]<=a[j] && l[i]<=l[j])
+ {l[i]=l[j]+1;
+  p[i]=j;}}}
+
+/* cauta cea mai mare lungime maxima a unui subsir pentru a gasi
+ elementul
+cu care incepe subsirul */
+void solutie()
+{int i,max=-1;
+for(i=1;i<=n;i++)
+  if(max<l[i]) {max=l[i]; k=i;}
+  }
+
+/* afiseaza lungimea sirului gasit si solutia problemei folosind
+ informatiile
+din vectorul p */
+void afiseaza()
+{int i,j;
+cout<<"lungime subsir"<<l[k]<<endl;
+for(i=1,j=k;i<=l[k];i++,j=p[j])
+cout<<a[j]<<" ";
+}
+
+void
+ main()
+{
+citeste();
+p_dinamica();
+solutie();
+afiseaza();
+}
+
+#include<fstream.h>
+
+int n,k,m,a[20],p[20],l[20],b[20];
+
+fstream g("D:\\kituri\\ioana\\programe\\poo2\\prog_din1.txt",ios::in);
+fstream f("D:\\kituri\\ioana\\programe\\poo2\\prog_din.txt",ios::in);
+
+/*initealizeaza elementul n al vectorilor l(pentru memorarea lungimilor
+ maxime) si p
+(memorarea indicelui urmator din subsir)*/
+void init()
+{l[n]=1;
+p[n]=n;
+}
+
+/*calculeaza valoarea solutiei optime ()lungimea maxima a
+subsirurilor care
+ incep cu fiecare element a[i] din sir */
+void p_dinamica()
+{int i,j;
+for(i=n;i>=1;i--)
+  {l[i]=1;
+   p[i]=i;
+    for(j=i+1;j<=n;j++)
+      if(a[i]<=a[j] && l[i]<=l[j])
+ {l[i]=l[j]+1;
+  p[i]=j;}}}
+
+/* cauta cea mai mare lungime maxima a unui subsir pentru a gasi
+ elementul
+cu care incepe subsirul */
+void solutie()
+{int i,max=-1;
+for(i=1;i<=n;i++)
+  if(max<l[i]) {max=l[i]; k=i;}
+  }
+
+/* afiseaza lungimea sirului gasit si solutia problemei folosind
+ informatiile
+din vectorul p */
+void afiseaza()
+{int i,j;
+cout<<"lungime subsir"<<l[k]<<endl;
+for(i=1,j=k;i<=l[k];i++,j=p[j])
+cout<<a[j]<<" ";
+}
+
+void main()
+{  int i;
+g>>n;
+for(i=1;i<=n;i++)
+g>>a[i];
+g.close();
+p_dinamica();
+solutie();
+afiseaza();
+}

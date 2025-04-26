@@ -1,0 +1,177 @@
+
+1. Instructiunea switch. Descriere.
+
+	 Instrucțiunea switch este utilizată pentru a evalua o expresie și a executa blocuri de cod în funcție de valoarea rezultatului. Este o alternativă la mai multe condiții if...else.
+
+
+switch (expresie) {
+  case valoare1:
+    // cod pentru valoare1
+    break;
+  case valoare2:
+    // cod pentru valoare2
+    break;
+  default:
+    // cod pentru alte cazuri
+}
+
+- break este necesar pentru a evita trecerea în următorul caz.
+- Instrucțiunea default este opțională și se execută dacă niciun caz nu este valid.
+
+-------------------------------------------------
+2. Instructiuni repetitive. Descriere, diferente.
+
+	Instrucțiunile repetitive sunt utilizate pentru a executa un bloc de cod în mod repetat cât timp o condiție este adevărată.
+Tipuri de instrucțiuni repetitive:
+- for: folosit atunci când știm numărul exact de iterații.
+	for(int i = 0; i < n; i++) {
+    		// cod
+	}
+- while: folosit când numărul de iterații este necunoscut, dar condiția trebuie verificată înainte.
+	while(conditie) {
+    		// cod
+	}
+- do...while: execută cel puțin o dată blocul de cod înainte de verificarea condiției.
+	do {
+    		// cod
+	} while(conditie);
+
+Diferente:
+- for este preferat când numărul de iterații este fix.
+- while și do...while sunt folosite pentru condiții mai flexibile.
+- do...while garantează cel puțin o execuție a blocului de cod.
+
+
+-------------------------------------------------
+3. Sa se scrie un program (in C sau C++) pentru urmatoarea problema.
+Se citeste un numar intreg k de la tastarua, apoi se citeste un sir de k numere intregi de la
+tastarura.
+a. aa se determine cate numere din sirul respectiv sunt mai mici decat k
+b. Sa se determine cate numere sunt pare si cate numere sunt impare.
+c. Sa se creeze o lista simplu inlantuita formata numai din numerele divizibile cu 3 din sirul
+respectiv
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h> // pentru functii de manipulare a caracterelor
+
+int main() {
+    FILE *file = fopen("text.txt", "r"); // Deschidem fisierul
+
+    if (file == NULL) {
+        printf("Eroare la deschiderea fisierului!\n");
+        return 1;
+    }
+
+    char word[100];
+    int uppercaseWords = 0, numbersCount = 0;
+    int uppercaseLetters = 0, lowercaseLetters = 0, digitCount = 0;
+
+    while (fscanf(file, "%s", word) != EOF) { // Citim fiecare cuvant din fisier
+        if (isupper(word[0])) {
+            uppercaseWords++; // a) Cuvinte care incep cu litera mare
+        }
+
+        // Verificare pentru numere in cuvant
+        int isNumber = 1;
+        for (int i = 0; word[i] != '\0'; i++) {
+            if (!isdigit(word[i])) {
+                isNumber = 0;
+            }
+            if (isupper(word[i])) uppercaseLetters++;
+            else if (islower(word[i])) lowercaseLetters++;
+            else if (isdigit(word[i])) digitCount++;
+        }
+        if (isNumber) {
+            numbersCount++;
+        }
+    }
+
+    fclose(file);
+
+    // Afisarea rezultatelor
+    printf("Numar de cuvinte care incep cu litera mare: %d\n", uppercaseWords);
+    printf("Numar de numere in text: %d\n", numbersCount);
+    printf("Numar de litere mari: %d\n", uppercaseLetters);
+    printf("Numar de litere mici: %d\n", lowercaseLetters);
+    printf("Numar de cifre: %d\n", digitCount);
+
+    return 0;
+}
+
+--------------------------------------------------
+4. Sa se scrie un program (in C sau C++) pentru urmatoarea problema.
+Se citeste un text dintr-un fisier.
+a) Sa se determine cate cuvinte incep cu litera mare
+b) Sa se determine cate numere sunt in text (un numar este o succesiune de cifre)
+c) Sa se determine cate litere mari, mici, si cifre sunt in text.
+
+
+
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+    FILE *file = fopen("text.txt", "r"); // Deschidem fisierul
+    if (file == NULL) {
+        printf("Eroare la deschiderea fisierului!\n");
+        return 1;
+    }
+
+    char c;
+    int uppercaseWords = 0, numbersCount = 0;
+    int uppercaseLetters = 0, lowercaseLetters = 0, digitCount = 0;
+
+    int inWord = 0, inNumber = 0, isFirstLetterUppercase = 0;
+
+    while ((c = fgetc(file)) != EOF) {
+        if (isalpha(c)) {
+            if (!inWord) { // Detectam inceputul unui cuvant
+                inWord = 1;
+                isFirstLetterUppercase = isupper(c);
+            }
+            if (isupper(c)) uppercaseLetters++;
+            else lowercaseLetters++;
+        } else {
+            if (inWord && isFirstLetterUppercase) {
+                uppercaseWords++;
+            }
+            inWord = 0;
+        }
+
+        if (isdigit(c)) {
+            if (!inNumber) {
+                inNumber = 1;
+                numbersCount++; // Gasim un nou numar
+            }
+            digitCount++;
+        } else {
+            inNumber = 0;
+        }
+    }
+
+    fclose(file);
+
+    // Afisarea rezultatelor
+    printf("Numar de cuvinte care incep cu litera mare: %d\n", uppercaseWords);
+    printf("Numar de numere in text: %d\n", numbersCount);
+    printf("Numar de litere mari: %d\n", uppercaseLetters);
+    printf("Numar de litere mici: %d\n", lowercaseLetters);
+    printf("Numar de cifre: %d\n", digitCount);
+
+    return 0;
+}
+
+
+
+
+
+Nota: pentru problemele 3 si 4 descrieti in cuvinte ideea principala a algoirtmului folosit (un
+pseudocod) si apoi scrieti implementarea; comentati cat mai mult din cod pentru a se
+intelege exact.

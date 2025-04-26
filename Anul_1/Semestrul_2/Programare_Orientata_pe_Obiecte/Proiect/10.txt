@@ -1,0 +1,38 @@
+#include <iostream>
+#include <vector>
+
+class ProdusOnline {
+private:
+    std::string nume;
+    double pret;
+    bool disponibil;
+
+public:
+    ProdusOnline(const std::string& nume, double pret, bool disponibil)
+        : nume(nume), pret(pret), disponibil(disponibil) {}
+
+    void afisare() const {
+        std::cout << nume << ": " << pret << " RON - " << (disponibil ? "Disponibil" : "Stoc epuizat") << "\n";
+    }
+};
+
+class MagazinOnline {
+private:
+    std::vector<ProdusOnline> produse;
+
+public:
+    void adaugaProdus(const ProdusOnline& p) {
+        produse.push_back(p);
+    }
+
+    void afisareProduse() const {
+        for (const auto& p : produse) p.afisare();
+    }
+};
+
+int main() {
+    MagazinOnline magazin;
+    magazin.adaugaProdus(ProdusOnline("Laptop", 3500, true));
+    magazin.adaugaProdus(ProdusOnline("Telefon", 2500, false));
+    magazin.afisareProduse();
+}

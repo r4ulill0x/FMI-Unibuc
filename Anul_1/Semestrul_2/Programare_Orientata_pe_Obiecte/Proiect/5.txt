@@ -1,0 +1,30 @@
+#include <iostream>
+
+class Complex {
+private:
+    double real, imaginar;
+
+public:
+    Complex(double r = 0, double i = 0) : real(r), imaginar(i) {}
+
+    Complex operator+(const Complex& other) const {
+        return Complex(real + other.real, imaginar + other.imaginar);
+    }
+
+    Complex operator*(const Complex& other) const {
+        return Complex(real * other.real - imaginar * other.imaginar,
+                       real * other.imaginar + imaginar * other.real);
+    }
+
+    void afisare() const {
+        std::cout << real << " + " << imaginar << "i\n";
+    }
+};
+
+int main() {
+    Complex c1(3, 4), c2(1, 2);
+    Complex suma = c1 + c2;
+    Complex produs = c1 * c2;
+    suma.afisare();
+    produs.afisare();
+}

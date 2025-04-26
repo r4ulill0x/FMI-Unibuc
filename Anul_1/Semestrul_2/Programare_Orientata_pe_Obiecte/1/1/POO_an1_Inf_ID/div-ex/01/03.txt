@@ -1,0 +1,313 @@
+//obiect
+clasa cont bancar
+matrice
+#include<iostream.h>
+#include<iomanip.h>
+#include<string.h>
+
+//este creata clasa studenti
+class studenti
+{
+public:
+	char nume[100];//nume este element al clasei studenti
+};
+
+void main()
+{
+
+}
+------------------------------------------------------------------
+#include<iostream.h>
+#include<iomanip.h>
+#include<string.h>
+
+//este creata clasa cont bancar
+class cont_bancar
+{
+public:
+	int Numar_cont[100];
+};
+
+void main()
+{
+
+}
+-------------------------------------------------------------------
+
+#include<iostream.h>
+#include<string.h>
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<math.h>
+
+
+//este creata clasa matrice
+class matrice
+{
+public:
+	int a[100][100]; // TEMA: ALOCARE DINAMICA (VARIANTE)
+	int n;
+	void creare(int n);
+};
+
+void matrice::creare(int n)
+{int i,j;
+for(i=1;i<=n;i++)
+ for(j=1;j<=n;j++)
+{cout<<"a["<<i<<"]["<<j<<"]=";
+ cin>>a[i][j];}
+ for(i=1;i<=n;i++)
+ {cout<<endl;
+  for(j=1;j<=n;j++)
+	  cout<<a[i][j]<<" ";}
+ cout<<endl;
+}
+
+void main()
+{
+	matrice matrice1;
+	matrice1.creare(3);
+}
+
+#include<stdio.h>
+#include<conio.h>
+#include<iostream.h>
+#include<stdlib.h>
+#include<math.h>
+#include<string.h>
+int n;
+
+int sign(int s[50])
+{int m=0,v[50];//m este nr de inversiuni ale permutarii s
+for(int i=1;i<=n;i++)
+  v[i]=0;
+for(int k=n;k>0;k--)
+  for(int i=1;i<=n;i++)
+	 if(s[i]==k)
+	   {m+=n-i-v[i];
+	    for(int j=1;j<i;j++)
+		   v[j]++;
+	   break;
+	   }
+return pow(-1,m);
+}
+
+float det(float a[50][50])
+{int x[50];
+int k=1,as,ev,fact=0,perm=1,suma=0;
+x[k]=0;
+for(int i=1;i<=n;i++)
+  perm*=i;        //n!
+while(k>0)
+  {as=0;
+   //while(x[k]<n)
+
+   do {
+    x[k]++;
+    if (x[k]<=n)
+	   as=1;
+    ev=1;
+    if(k>1)
+	for(int i=1;i<k;i++)
+	/* {x[i]=1;
+	  ev=1;
+	  for(int j=1;j<i;j++)*/
+	    if(x[i]==x[k])
+		 {ev=0;
+		  break;
+		 }
+   }while((as)&&(!((as)&&(ev))));
+   if(as)
+	 if (k==n)
+		 {fact++;
+		  int prod=sign(x);
+		  for(int i=1;i<=n;i++)
+			prod*=a[i][x[i]];
+		  suma+=prod;
+		  if(fact==perm)
+		    return suma;
+		  k--;
+		 }
+		  //	 return a[k][x[k]];
+	 else
+	   {k++;
+	    x[k]=0;
+	   }
+   else k--;
+  }
+}
+
+void main()
+{float a[50][50],d,dn,b[50],col[50],x[50][2],nr;
+int i,j,coef;
+char *semn,*cifra,*s;
+i=0;
+j=1;
+semn="";
+cifra="";
+cout<<"Exemplu:"<<endl;
+cout<<"Se apasa: -,10,+,2,+,1,=,9"<<endl;
+cout<<"si apare: -10x1+2x2+x3=9"<<endl;
+do
+   semn[0]=getch();
+while((semn[0]!='-')&&(semn[0]!='+'));
+if(semn[0]=='-')
+	{coef=-1;
+	 //cout<<'-';
+	 }
+else coef=1;
+while(semn[0]!='=')
+ { s=" ";
+   do
+    {cifra[0]=getch();
+	cifra[1]=0;
+    }while((cifra[0]<'0')||(cifra[0]>'9'));
+    strcpy(s,cifra);
+    nr=atoi(s);
+   do
+   {semn="";
+    cifra[0]=getch();
+    cifra[1]=0;
+    if((cifra[0]>='0')&&(cifra[0]<='9'))
+	    {//cout<<cifra;
+		strcat(s,cifra);
+		nr=atoi(s);
+		}
+    else
+	    strcpy(semn,cifra);
+   }
+   while((semn[0]!='-')&&(semn[0]!='+')&&((semn[0]!='=')||(i==0)));
+   i++;
+   a[i][j]=coef*nr;
+   if(nr)
+	 {if(coef==-1)
+		cout<<'-';
+	  if((coef==1)&&(i>1))
+		cout<<'+';
+	  }
+   if((nr!=1)&&(nr!=0))
+	cout<<nr;
+   if(nr)
+	cout<<'x'<<i;
+   if(semn[0]=='-')
+	{coef=-1;
+	// cout<<'-';
+	}
+   if(semn[0]=='+')
+	   {coef=1;
+	   // cout<<'+';
+	    }
+ }
+ n=i;
+ cout<<'=';
+ cin>>b[j];
+
+
+for(j=2;j<=n;j++)
+{i=0;
+char *s,*cifra;
+semn="";
+//cifra="";
+do
+   semn[0]=getch();
+while((semn[0]!='-')&&(semn[0]!='+'));
+if(semn[0]=='-')
+	{coef=-1;
+	 //cout<<'-';
+	 }
+else coef=1;
+while(semn[0]!='=')
+ { s=" ";
+   //semn="";
+   do
+	{cifra[0]=getch();
+	 cifra[1]=0;
+	}while((cifra[0]<'0')||(cifra[0]>'9'));
+   strcpy(s,cifra);
+   nr=atoi(s);
+   do
+   {semn="";
+    cifra[0]=getch();
+    cifra[1]=0;
+    if((cifra[0]>='0')&&(cifra[0]<='9'))
+	    {//cout<<cifra;
+		strcat(s,cifra);
+		nr=atoi(s);
+		}
+    else
+	    strcpy(semn,cifra);
+   }
+   while((semn[0]!='-')&&(semn[0]!='+')&&((semn[0]!='=')||(i==0)));
+   i++;
+   a[i][j]=coef*nr;
+   if(nr)
+	 {if(coef==-1)
+		cout<<'-';
+	  if((coef==1)&&(i>1))
+		cout<<'+';
+	  }
+   if((nr!=1)&&(nr!=0))
+	cout<<nr;
+   if(nr)
+	cout<<'x'<<i;
+   if(semn[0]=='-')
+	{coef=-1;
+    //	 cout<<'-';
+	 }
+   if(semn[0]=='+')
+	   {coef=1;
+	//    cout<<'+';
+	   }
+ }
+ cout<<'=';
+ cin>>b[j];
+}
+
+
+
+
+cout<<"n=";
+cin>>n;
+for(j=1;j<=n;j++)
+   for(i=1;i<=n;i++)
+	  {cout<<"a["<<i<<"]["<<j<<"]=";
+	   cin>>a[i][j];
+	   }
+for(j=1;j<=n;j++)
+	{cout<<"b["<<j<<"]=";
+	 cin>>b[j];
+	}
+d=det(a);
+if (d)
+    {for(i=1;i<=n;i++)
+	   {for(j=1;j<=n;j++)
+		 {col[j]=a[i][j];
+		  a[i][j]=b[j];
+		  }
+	    dn=det(a);
+	    x[i][0]=dn/d;
+	    x[i][1]=dn;
+	    for(j=1;j<=n;j++)
+		  a[i][j]=col[j];
+	    }
+	for(i=1;i<=n;i++)
+	   if(int(x[i][0])==x[i][0])
+		 cout<<'x'<<i<<'='<<x[i][0]<<' ';
+	   else
+		 cout<<'x'<<i<<'='<<x[i][1]<<'/'<<d<<' ';
+    }
+else
+    {for(j=1;j<=n;j++)
+		 {col[j]=a[1][j];
+		  a[1][j]=b[j];
+		  }
+	    dn=det(a);
+	    if (dn)
+		    {cout<<"";
+		      cout<<"Sistem incompatibil";
+                            }
+	    else cout<<"Sistem compatibil nedeterminat";
+    }
+getch();
+}

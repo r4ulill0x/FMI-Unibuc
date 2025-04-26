@@ -1,0 +1,35 @@
+#include <iostream>
+#include <vector>
+
+class Carte {
+private:
+    std::string titlu, autor;
+
+public:
+    Carte(const std::string& titlu, const std::string& autor) : titlu(titlu), autor(autor) {}
+
+    void afisare() const {
+        std::cout << "Titlu: " << titlu << ", Autor: " << autor << "\n";
+    }
+};
+
+class Biblioteca {
+private:
+    std::vector<Carte> carti;
+
+public:
+    void adaugaCarte(const Carte& c) {
+        carti.push_back(c);
+    }
+
+    void afisareCarti() const {
+        for (const auto& c : carti) c.afisare();
+    }
+};
+
+int main() {
+    Biblioteca biblioteca;
+    biblioteca.adaugaCarte(Carte("Ion", "Liviu Rebreanu"));
+    biblioteca.adaugaCarte(Carte("Moromeții", "Marin Preda"));
+    biblioteca.afisareCarti();
+}

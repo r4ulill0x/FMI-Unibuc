@@ -1,0 +1,325 @@
+ex.1
+//clasa pozitie, clasa de baza
+class pozitie{
+protected:
+  int x,y;                           //coordonate
+public:
+  pozitie(int=0,int=0);              //constructor
+  pozitie(pozitie&);                 //constructor
+                                     //copiere
+  ~pozitie();                        //destructor
+  void afisare();
+  void deplasare(int,int);
+};
+
+//definitii functii membre, clasa pozitie
+pozitie::pozitie(int abs,int ord)     //constructor
+{ x=abs;y=ord;
+cout<<"Constructor"<<this;
+afisare(); }
+//constructor copiere
+pozitie::pozitie(pozitie & p)
+{  x=p.x; y=p.y;
+cout<<"Constructor copiere," <<this;
+afisare();}
+pozitie::~pozitie()                   //destructor
+{ cout<< "Destructor"<<x;
+afisare();}
+void pozitie::afisare()
+{ cout<<"pozitie:x="<<x;
+  cout<<",y="<<y<<"\n";}
+void pozitie::deplasare(int dx,int dy)
+{x+=dx; y+=dy}
+
+========================================================
+
+//clasa punct, derivata din clasa pozitie
+class punct:public pozitie{
+int vizibil;                           //0=invizibil
+char culoare;                          //culoare codificata
+                                       //printr-o litera
+public:
+//constructor
+punct(int=0,int=0,char='A');
+//constructor copiere
+punct (punct &);
+//destructor
+~punct();
+void arata() {vizibil=1;}
+void ascunde() {vizibil=0;}
+void coloreaza(char c) {culoare=c;}
+void afispct();
+}
+void punct::afispct()
+{  cout<<"punct:x="<<x<<",y="<<y;
+   cout<<"culoare="<<culoare<<'\n';
+}
+
+===============================================
+ex.1:
+
+punct::punct(int abs,int ord,char c):
+   pozitie(abs,ord)
+{  vizibil=0;                      //initial invizibil
+   culoare=c;
+   cout<<"Constructor"<<this;
+   afispct();}
+
+/==============================================
+punct p1(10,20,'B');
+/==============================================
+punct p1;
+
+
+==============================================
+ex.1':
+
+punct::~punct()                    //destructor punct
+
+{   cout<<"Destructor"<<this;
+    afispct();   }
+
+==============================================
+ex.1"
+
+
+void main()
+{
+  punct p0,p1(10,10),p2(20,20,'B');
+}
+
+Programul afiseaza:
+
+Constructor 0x8f59ffee pozitie: x=0,y=0
+Constructor 0x8f59ffee punct: x=0,y=0,
+    culoare=A
+Constructor 0x8f59ffe6 pozitie: x=10,y=10
+Constructor 0x8f59ffe6 punct: x=10,y=10,
+    culoare=A
+Constructor 0x8f59ffde pozitie:x=20,y=20
+Constructor 0x8f59ffde punct:x=20,y=20,
+    culoare=B
+Destructor 0x8f59ffde punct: x=20,y=20,
+    culoare=B
+Destructor 0x8f59ffde pozitie: x=20;y=20
+Destructor 0x8f59ffe6 punct:x=10,y=10,
+    culoare=A
+Destructor 0x8f59ffe6 pozitie:x=10,y=10
+Destructor 0x8f59ffee punct:x=0,y=0,
+    culoare=A
+Destructor 0x8f59ffee pozitie:x=0,y=0
+
+
+=============================================
+D(D&d)
+
+punct::punct(punct&pct) {...}
+
+=============================================
+D(D&d): B (...)
+
+punct::punct(punct&pct): pozitie(...)
+
+=============================================
+
+
+ex.1:
+
+punct::punct(punct&pct):
+                  pozitie(pct.x, pct.y)
+{   vizibil=pct.vizibil;culoare=pct.culoare;
+    cout<<"Constructor copiere,"<<this;
+    afispct;    }
+
+=============================================
+
+ex.1':
+
+void main ()
+{   punct p0(1,1,'V'),p1(p0);    }
+
+Programul afiseaza
+
+Constructor 0x8f59ffee pozitie: x=1,y=1
+Constructor 0x8f59ffee punct: x=1,y=1,
+    culoare=V
+Constructor 0x8f59ffe6 pozitie: x=1,y=1
+Constructor copiere, 0x8f59ffe6 punct: x=1,
+    y=1,culoare=V
+Destructor 0x8f59ffe6 punct: x=1,y=1,
+    culoare=V
+Destructor 0x8f59ffe6 pozitie: x=1,y=1
+Destructor 0x8f59ffee punct: x=1,y=1,
+    culoare=V
+Destructor 0x8f59ffee pozitie: x=1,y=1
+
+===========================================
+
+ex.1:
+
+void punct::afisare()
+{  cout<<"punct:x="<<x;
+   cout<<",y="<<y;
+   cout<<"culoare=="<<culoare;
+   if(vizibil) cout<<"vizibil\n";
+   else cout<<"invizibil\n";
+}
+
+==========================================
+
+void punct::deplasare(int dx,int dy)
+{
+  if(vizibil) {
+      cout<<"Deplasare:";
+      afisare();   }                   //apel afisare punct
+  x+=dx;y+=dy;
+  if(vizibil)  {
+    cout<<"la coordonatele:";
+    //apel afisare pozitie
+    pozitie::afisare();  }
+}
+
+==========================================
+
+ex.1':
+
+void main()
+{
+   punct p;
+   p.arata();p.deplasare(10,10);
+}
+
+=========================================
+
+Constructor pozitie: x=0,y=0
+Constructor punct: x=0,y=0  culoare=A
+   invizibil
+Deplasare:punct: x=0,y=0, culoare=A
+   vizibil
+la coordonatele:pozitie: x=10,y=10
+Destructor:punct:x=0,y=0,culoare=A
+   vizibil
+Destructor pozitie: x=10,y=10
+
+========================================
+
+punct::punct(punct 7 pct):pozitie(pct)
+{  vizibil=pct.vizibil;culoare=pct.culoare;
+   cout<<"Constructor copiere,";
+   afisare();   }
+
+========================================
+
+ex.1:
+
+//clasa pozitie.clasa de baza
+class pozitie {
+protected:
+   int x,y;                               //coordonate
+public:
+   pozitie(int=0,int=0);                  //constructor
+   pozitie(pozitie &);
+                                          //copiere
+   ~pozitie();
+   void afisare();
+   void deplasare(int,int);
+};
+//definitii functii membre, clasa pozitie
+pozitie::pozitie(int abs,int ord)         //constructor
+{   x=abs,y=ord;
+    cout<<"Constructor copiere";
+    afisare();   }
+pozitie::~pozitie()                       //destructor
+{   cout<<"pozitie:"<<this;
+    cout<<"x="<<x<<",y=="<<y<<'\n';
+}
+void pozitie::deplasare(int dx,int dy)
+{   x+=dx;y+=dy;}
+
+//clasa punct,derivata din clasa pozitie
+class punct:public pozitie {
+    int vizibil;                         //0=invizibil
+    char culoare;                        //culoare(litera)
+public:
+    punct(int=0,int=0,char='A');         //constructor
+    punct(punct &);                      //constructor copiere
+    ~punct();                            //destructor
+    void arata()    {vizibil=1}
+    void ascunde()  {vizibil=0}
+    void coloreaza (char c)   {culoare=c;}
+    void afisare();
+    void deplasare(int,int);
+
+};
+//definitii functii membre,clasa punct
+punct:;punct(int abs, int ord, char c):pozitie(abs,ord)
+{  vizibil=0;                            //initial invizibil
+   culoare=c;
+   cout<<"Constructor copiere";
+   afisare();   }
+punct::~punct()                          //destructor punct
+{  cout<<"Destructor";afisare();}
+void punct::afisare()
+{  cout<<"punct:"<<this;
+   cout<<"x="<<x<<",y="<<y;
+   cout<<"\culoare="<<culoare;
+   if(vizibil) cout<<"vizibil\n";
+   else cout<<"invizibil\n";   }
+void punct::deplasare(int dx,int dy)
+{
+   if(vizibil)
+   {  cout<<"Deplasare:"afisare();   }
+   x+=dx;y+=dy;
+   if(vizibil)
+     cout<<"la coordonatele:";
+     pozitie::afisare();   }
+}
+pozitie poz1(5,5),*ppoz;
+punct pct1(10,10,'R').*ppct;
+//test creare obiect prin copiere
+  punct pct2(pct1);
+  pct2.coloreaza('V');
+//conv.implicita obiect punct-->obiect pozitie
+  poz1=pct1;
+  poz1.afisare();
+//conv.explicita pointer punct-->pointer\pozitie
+  ppct=(punct*)ppoz;ppct->afisare(0;
+}
+
+Programul afiseaza:
+
+Constructor pozitie: 0x8f4ffff2 x=5,y=5
+Constructor pozitie: 0x8f4fffea x=10,y=10
+Constructor pozitie: 0x8f4fffea x=10,y=10,
+   culoare=R invizibil
+Constructor copiere pozitie: 0x8f4fffe0 x=10,
+   y=10
+Constructor pozitie: 0x8f4fffe0 x=10,
+   y=10 culoare=R invizibil
+pozitie: 0x8f4ffff2 x=10,y=10
+pozitie 0x8f4fffe0 x=10,y=10
+punct: 0x8f4fffe0 x=10,y=10 culoare=V
+  invizibil
+Destructor punct: 0x8f4fffe0 x=10,y=10
+  culoare=V invizibil
+Destructor pozitie: 0x8f4fffe0 x=10,y=10
+Destructor punct: 0x8f4fffea x=10,y=10
+  culoare=R invizibil
+Destructor pozitie: 0x8f4fffea x=10,y=10
+Destructor pozitie: 0x8f4fff2x x=10,y=10
+
+================================================
+
+referinta D --> referinta B
+poz1=pct1;                             //obiect D --> obiect B
+ppoz=&pct2;                            //pointer D -->pointer B
+
+===============================================
+
+pct1=poz1;                            //obiect B -->obiect D
+ppct=ppoz;                            //pointer B -->pointer D
+
+==============================================
+
+ppct=(punct*)ppoz;                   //pointer B -->D
+                
